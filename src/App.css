@@ -1,0 +1,662 @@
+/* ============================================
+   Navbar — floats transparent over the hero. Its glass
+   background darkens continuously in step with --p (the
+   same day → night progress driving the hero image), set
+   on <html> by hero.js so it reaches this element even
+   though the navbar itself sits outside .hero. Once you've
+   scrolled fully past the hero, .is-scrolled takes over
+   with a fixed solid look for the rest of the page.
+   ============================================ */
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 22px 0;
+  background-color: rgba(11, 18, 32, calc(0.22 + 0.5 * var(--p, 0)));
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  transition: padding .35s ease, box-shadow .35s ease;
+}
+
+.navbar__inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+/* Logo */
+
+.navbar__logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 1.25rem;
+  letter-spacing: -0.01em;
+  color: #F7F5F0;
+  text-decoration: none;
+}
+
+.navbar__logo-mark {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #FFE1A0, #FFB648 65%, #E8933A 100%);
+  box-shadow: 0 0 0 3px rgba(255, 182, 72, 0.18);
+  flex-shrink: 0;
+}
+
+/* Links */
+
+.navbar__links {
+  display: flex;
+  align-items: center;
+  gap: 34px;
+}
+
+.navbar__links a {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: rgba(247, 245, 240, 0.85);
+  text-decoration: none;
+  position: relative;
+  padding: 4px 2px;
+}
+
+.navbar__links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0%;
+  height: 1px;
+  background: #FFB648;
+  transition: width .25s ease;
+}
+
+.navbar__links a:hover::after,
+.navbar__links a:focus-visible::after {
+  width: 100%;
+}
+
+/* Actions */
+
+.navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.navbar__cta {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #0B1220;
+  background: #FFB648;
+  padding: 11px 22px;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: transform .2s ease, box-shadow .2s ease;
+  white-space: nowrap;
+}
+
+.navbar__cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px -8px rgba(255, 182, 72, 0.7);
+}
+
+/* Scrolled state — glass background so links stay legible over any content below */
+
+.navbar.is-scrolled {
+  padding: 14px 0;
+  background: rgba(11, 18, 32, 0.72);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* Mobile toggle */
+
+.navbar__toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 34px;
+  height: 34px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.navbar__toggle span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: #F7F5F0;
+  border-radius: 2px;
+  transition: transform .25s ease, opacity .25s ease;
+}
+
+.navbar.is-open .navbar__toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.navbar.is-open .navbar__toggle span:nth-child(2) { opacity: 0; }
+.navbar.is-open .navbar__toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.navbar a:focus-visible,
+.navbar button:focus-visible {
+  outline: 2px solid #FFB648;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Responsive */
+
+@media (max-width: 860px) {
+  .navbar__links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 18px 32px 24px;
+    background: rgba(11, 18, 32, 0.92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .3s ease;
+  }
+
+  .navbar__links a { padding: 10px 0; width: 100%; }
+
+  .navbar.is-open .navbar__links { max-height: 320px; }
+
+  .navbar__cta { padding: 9px 16px; font-size: 0.85rem; }
+
+  .navbar__toggle { display: flex; }
+}
+/* Force full-bleed regardless of what a parent framework template did.
+   Vite's default App.css, for example, ships `#root { max-width:1280px;
+   margin:0 auto; padding:2rem; }` — that alone produces letterboxing on
+   every full-width section on the page. Safer to override it here than
+   to assume it's been removed. */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+#root, #app, body > div:first-child {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+/* How the pin works: .hero is tall (180vh). Its inner
+   .hero__stage is `position: sticky; top:0`, so it stays
+   glued to the viewport for as long as .hero still has
+   scroll room left. hero.js reads how far you've scrolled
+   through that extra height and writes it to --p (0 → 1)
+   on .hero. Every property below that reads var(--p) is
+   what actually "animates" — scroll up and it all runs
+   in reverse automatically, no extra logic needed.
+   Once .hero runs out of height, .hero__stage un-pins and
+   the page scrolls on to whatever comes next normally. */
+
+.hero {
+  --p: 0; /* 0 = full day, 1 = full night — set by hero.js on scroll */
+  position: relative;
+  height: 140vh;
+  background: #0B1220;
+}
+
+.hero__stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/* Scene layers */
+
+.hero__scene {
+  position: absolute;
+  inset: 0;
+  transform: scale(calc(1.05 - 0.05 * var(--p)));
+  filter:
+    brightness(calc(1 - 0.55 * var(--p)))
+    saturate(calc(1 - 0.4 * var(--p)))
+    contrast(calc(1 + 0.08 * var(--p)));
+}
+
+.hero__illustration {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.hero__image {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+.hero__image--night {
+  opacity: var(--p);
+}
+
+/* Scrim keeps nav + copy readable over any photo, day or night */
+
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(68% 78% at 24% 62%, rgba(6,9,17,.68) 0%, rgba(6,9,17,.2) 60%, rgba(6,9,17,0) 88%),
+    linear-gradient(180deg, rgba(6,9,17,.65) 0%, rgba(6,9,17,0) 32%, rgba(6,9,17,0) 55%, rgba(6,9,17,.8) 100%);
+}
+
+/* Energy dots — a few pulses of light travelling roughly from the roof
+   panels toward the house, only visible once night has mostly fallen. */
+
+.hero__energy {
+  position: absolute;
+  top: 50%;
+  right: 34%;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  transition: opacity .5s ease;
+}
+
+.hero__energy.is-active { opacity: 1; }
+
+.hero__energy .dot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #FFD37A;
+  box-shadow: 0 0 8px 2px rgba(255, 211, 122, .9);
+  opacity: 0;
+  animation: flow 2.6s linear infinite;
+}
+
+.hero__energy.is-active .dot { animation-play-state: running; }
+.hero__energy:not(.is-active) .dot { animation-play-state: paused; opacity: 0; }
+
+.hero__energy .dot:nth-child(1) { animation-delay: 0s; }
+.hero__energy .dot:nth-child(2) { animation-delay: .65s; }
+.hero__energy .dot:nth-child(3) { animation-delay: 1.3s; }
+.hero__energy .dot:nth-child(4) { animation-delay: 1.95s; }
+
+@keyframes flow {
+  0%   { transform: translate(0, 0);          opacity: 0; }
+  12%  { opacity: 1; }
+  100% { transform: translate(-50px, 130px); opacity: 0; }
+}
+
+/* Copy */
+
+.hero__content {
+  position: absolute;
+  left: 0;
+  bottom: 16%;
+  width: min(620px, 88vw);
+  padding-left: clamp(32px, 6vw, 96px);
+  color: #F7F5F0;
+}
+
+.hero__eyebrow,
+.hero__headline,
+.hero__subhead {
+  position: relative;
+}
+
+.hero__eyebrow { min-height: 1.6em; margin-bottom: 14px; }
+.hero__headline { min-height: 2.4em; margin-bottom: 18px; }
+.hero__subhead { min-height: 3.6em; margin-bottom: 20px; }
+
+.hero__eyebrow .hero__crossfade {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #FFB648;
+  text-shadow: 0 1px 10px rgba(6, 9, 17, 0.55);
+}
+
+.hero__headline .hero__crossfade {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(2.2rem, 4.6vw, 3.6rem);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  text-shadow: 0 4px 24px rgba(6, 9, 17, 0.55);
+}
+
+.hero__subhead .hero__crossfade {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  line-height: 1.55;
+  color: rgba(247, 245, 240, 0.92);
+  max-width: 46ch;
+  text-shadow: 0 2px 14px rgba(6, 9, 17, 0.55);
+}
+
+/* Crossfade mechanics: day copy sits in normal flow and defines the
+   box size; night copy sits exactly on top of it via absolute position. */
+
+.hero__crossfade--day {
+  display: block;
+  opacity: calc(1 - var(--text-out, 0));
+}
+
+.hero__crossfade--night {
+  display: block;
+  position: absolute;
+  inset: 0;
+  opacity: var(--text-in, 0);
+}
+
+.hero__buttons {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 14px 26px;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease;
+}
+
+.btn--primary {
+  position: relative;
+  overflow: hidden;
+  background: #FFB648;
+  color: #0B1220;
+}
+
+.btn--primary:hover { transform: translateY(-1px); box-shadow: 0 10px 24px -10px rgba(255,182,72,.7); }
+
+.btn--primary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(75deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  transform: skewX(-20deg);
+}
+
+.btn--primary:hover::after {
+  animation: btn-shine 900ms ease;
+}
+
+@keyframes btn-shine {
+  from { left: -60%; }
+  to { left: 130%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn--primary:hover::after { animation: none; }
+}
+
+.btn--ghost {
+  background: rgba(247, 245, 240, 0.08);
+  color: #F7F5F0;
+  border: 1px solid rgba(247, 245, 240, 0.35);
+}
+
+.btn--ghost:hover { background: rgba(247, 245, 240, 0.16); }
+
+.btn:focus-visible {
+  outline: 2px solid #FFB648;
+  outline-offset: 3px;
+}
+
+.hero__trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  list-style: none;
+  margin-top: 22px;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  color: rgba(247, 245, 240, 0.6);
+}
+
+.hero__trust li { position: relative; padding-left: 14px; }
+
+.hero__trust li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #FFB648;
+}
+
+/* Savings / electric-bill meter card */
+
+.savings-card {
+  position: absolute;
+  right: clamp(20px, 5vw, 72px);
+  bottom: clamp(28px, 7vw, 80px);
+  width: 250px;
+  padding: 22px 22px 20px;
+  border-radius: 18px;
+  background: rgba(16, 24, 38, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: 0 24px 60px -20px rgba(0,0,0,.5);
+  color: #F7F5F0;
+  opacity: var(--p);
+  transform: translateY(calc((1 - var(--p)) * 22px));
+}
+
+.savings-card__label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: rgba(247, 245, 240, 0.65);
+  margin-bottom: 6px;
+}
+
+.savings-card__value {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 2.1rem;
+  font-weight: 600;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.savings-card__value::before { content: '$'; font-size: 1.2rem; opacity: .7; margin-right: 2px; }
+
+.savings-card__unit {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgba(247, 245, 240, 0.55);
+  margin-left: 4px;
+}
+
+.savings-card__saved {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  color: rgba(247, 245, 240, 0.75);
+  margin-bottom: 14px;
+}
+
+.savings-card__saved strong {
+  font-family: 'IBM Plex Mono', monospace;
+  color: #FFD37A;
+  font-weight: 600;
+}
+
+.savings-card__bar-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.savings-card__icon {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+}
+
+.savings-card__icon--sun {
+  background: radial-gradient(circle at 35% 30%, #FFE1A0, #FFB648 65%, #E8933A 100%);
+}
+
+.savings-card__icon--moon {
+  background: radial-gradient(circle at 65% 35%, #F3EFE4, #C9C3B4 70%, #9B968A 100%);
+}
+
+.savings-card__bar {
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(247, 245, 240, 0.14);
+  overflow: hidden;
+}
+
+.savings-card__bar-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #FFB648, #7C6BC4 55%, #2E3A66);
+}
+
+.savings-card__badge {
+  display: inline-block;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #0B1220;
+  background: #FFD37A;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.savings-card__footnote {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.68rem;
+  color: rgba(247, 245, 240, 0.45);
+  margin-top: 10px;
+  line-height: 1.4;
+}
+
+/* Scroll cue */
+
+.hero__scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: 34px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: calc(1 - min(var(--p) * 12, 1));
+  color: rgba(247, 245, 240, 0.7);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero__scroll-cue-line {
+  width: 1px;
+  height: 26px;
+  background: rgba(247, 245, 240, 0.55);
+  overflow: hidden;
+  position: relative;
+}
+
+.hero__scroll-cue-line::after {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #FFB648;
+  animation: cue-drip 1.6s ease-in-out infinite;
+}
+
+@keyframes cue-drip {
+  0% { top: -100%; }
+  60% { top: 100%; }
+  100% { top: 100%; }
+}
+
+/* Responsive */
+
+@media (max-width: 860px) {
+  .hero__content { bottom: auto; top: 34%; }
+  .savings-card { width: 200px; padding: 18px 18px 16px; }
+  .savings-card__value { font-size: 1.7rem; }
+}
+
+@media (max-width: 600px) {
+  .hero { height: 120vh; }
+  .hero__content { top: 24%; padding-left: 24px; width: 92vw; }
+  .savings-card {
+    right: 24px;
+    bottom: 24px;
+    width: auto;
+    left: 24px;
+  }
+  .hero__scroll-cue { display: none; }
+}
+
+/* Respect reduced motion: skip the pin entirely, land straight on the
+   night state with everything already visible. */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero { height: 100vh; }
+  .hero__stage { position: relative; }
+  .hero__scene { transform: none; }
+  .hero__image--day { display: none; }
+  .hero__image--night { opacity: 1; }
+  .hero__crossfade--day { display: none; }
+  .hero__crossfade--night { position: relative; opacity: 1; }
+  .savings-card { opacity: 1; transform: none; }
+  .hero__energy .dot { animation: none; opacity: 0; }
+  .hero__scroll-cue { display: none; }
+}

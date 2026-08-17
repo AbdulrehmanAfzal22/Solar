@@ -1,0 +1,143 @@
+.solutions__grid {
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.solution-card {
+  position: relative;
+  padding: 28px;
+  overflow: hidden;
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+
+.solution-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--c-border-strong);
+  box-shadow: 0 24px 60px -24px rgba(255, 182, 72, 0.3);
+}
+
+/* Reveal-in bar — literally the same width 0%→100% technique as
+   .stat-block__underline in Stats.css, just relocated to the card edge. */
+.solution-card__bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--c-gold), var(--c-gold-soft));
+  transition: width 1.2s var(--ease-out);
+  z-index: 1;
+}
+
+.solution-card__bar.is-in {
+  width: 100%;
+}
+
+/* Decorative per-type background texture — CSS-only, purely ambient,
+   sits behind the card content (::before paints before the real
+   children in a shared stacking context, so no z-index juggling needed). */
+.solution-card--texture-rays::before,
+.solution-card--texture-grid::before,
+.solution-card--texture-curve::before,
+.solution-card--texture-corner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.solution-card--texture-rays::before {
+  background: repeating-linear-gradient(
+    115deg,
+    rgba(255, 182, 72, 0.09) 0px,
+    rgba(255, 182, 72, 0.09) 2px,
+    transparent 2px,
+    transparent 26px
+  );
+}
+
+.solution-card--texture-grid::before {
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255, 182, 72, 0.08) 0 1px, transparent 1px 28px),
+    repeating-linear-gradient(90deg, rgba(255, 182, 72, 0.08) 0 1px, transparent 1px 28px);
+}
+
+.solution-card--texture-curve::before {
+  background: radial-gradient(120% 80% at 50% 130%, rgba(255, 211, 122, 0.18), transparent 60%);
+}
+
+.solution-card--texture-corner::before {
+  background: radial-gradient(60% 60% at 100% 0%, rgba(255, 182, 72, 0.15), transparent 70%);
+}
+
+.solution-card__mark {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--c-gold), var(--c-gold-soft));
+  color: #1A1204;
+  margin-bottom: 20px;
+  transition: transform .35s var(--ease-out), box-shadow .35s var(--ease-out);
+}
+
+.solution-card:hover .solution-card__mark {
+  transform: rotate(-6deg) scale(1.08);
+  box-shadow: 0 10px 22px -8px rgba(255, 182, 72, 0.6);
+}
+
+/* Continuous idle pulse — lives on the icon itself (not .solution-card__mark,
+   which already animates transform on hover via transition) so the two
+   never fight over the same property. */
+.solution-card__icon {
+  width: 26px;
+  height: 26px;
+  animation: solution-icon-pulse 3s ease-in-out infinite;
+}
+
+@keyframes solution-icon-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .solution-card__icon { animation: none; }
+}
+
+.solution-card__name {
+  font-family: var(--f-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--c-paper);
+  margin-bottom: 8px;
+}
+
+.solution-card__desc {
+  font-family: var(--f-body);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--c-paper-dim);
+  margin-bottom: 18px;
+}
+
+.solution-card__link {
+  font-family: var(--f-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--c-gold);
+  text-decoration: none;
+}
+
+@media (max-width: 860px) {
+  .solutions__grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 560px) {
+  .solutions__grid { grid-template-columns: 1fr; }
+}

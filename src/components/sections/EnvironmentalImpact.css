@@ -1,0 +1,88 @@
+.environmental {
+  background: linear-gradient(180deg, #0B1220 0%, #0E1524 100%);
+}
+
+.environmental__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+.environmental__bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(11, 18, 32, 0.88) 0%, rgba(11, 18, 32, 0.78) 55%, rgba(11, 18, 32, 0.92) 100%);
+}
+
+.environmental .section__inner {
+  position: relative;
+  z-index: 1;
+}
+
+.environmental__reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1.8s var(--ease-out), transform 1.8s var(--ease-out);
+}
+
+.environmental__reveal.is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.environmental__grid {
+  margin-top: 64px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+  max-width: 640px;
+}
+
+.environmental__stat {
+  text-align: center;
+}
+
+.environmental__icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 16px;
+}
+
+.environmental__tree-path,
+.environmental__car-path {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: environmental-draw 2s var(--ease-out) forwards;
+  animation-play-state: paused;
+}
+
+.environmental__stat.is-in .environmental__tree-path,
+.environmental__stat.is-in .environmental__car-path {
+  animation-play-state: running;
+}
+
+@keyframes environmental-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+.environmental__stat-value {
+  font-family: var(--f-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(2rem, 4vw, 2.6rem);
+  font-weight: 600;
+  color: var(--c-paper);
+  margin-bottom: 6px;
+}
+
+.environmental__stat-label {
+  font-family: var(--f-body);
+  font-size: 0.85rem;
+  color: var(--c-paper-dim);
+}
+
+@media (max-width: 560px) {
+  .environmental__grid { grid-template-columns: 1fr; gap: 32px; }
+}

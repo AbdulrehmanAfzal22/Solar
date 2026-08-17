@@ -1,0 +1,159 @@
+.orbit-medallion {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  animation: orbit-float 7s ease-in-out infinite;
+}
+
+@keyframes orbit-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-18px); }
+}
+
+.orbit-medallion__glow {
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 182, 72, 0.28), transparent 70%);
+  filter: blur(6px);
+  animation: orbit-pulse 4.5s ease-in-out infinite;
+}
+
+@keyframes orbit-pulse {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+.orbit-medallion__ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 182, 72, 0.28);
+}
+
+.orbit-medallion__ring--outer {
+  inset: 0;
+  border-style: dashed;
+  transform-origin: center;
+  animation: orbit-spin 60s linear infinite;
+}
+
+/* The "middle" ring, counter-rotating against the outer one. */
+.orbit-medallion__ring--inner {
+  inset: 15%;
+  border-color: rgba(255, 182, 72, 0.4);
+  transform-origin: center;
+  animation: orbit-spin-reverse 40s linear infinite;
+}
+
+@keyframes orbit-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes orbit-spin-reverse {
+  to { transform: rotate(-360deg); }
+}
+
+/* Each dot orbits a real circle (via .orbit-medallion__satellite's own
+   rotation), but the wrapping .orbit-medallion__orbit tilts and squashes
+   that circle into a fixed elliptical path, so the motion doesn't read as
+   three dots just spinning in place on identical circles. */
+.orbit-medallion__orbit {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.orbit-medallion__orbit--1 { inset: 4%; transform: rotate(8deg) scaleY(0.55); }
+.orbit-medallion__orbit--2 { inset: 15%; transform: rotate(-15deg) scaleY(0.62); }
+.orbit-medallion__orbit--3 { inset: -6%; transform: rotate(22deg) scaleY(0.5); }
+
+.orbit-medallion__satellite {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  animation: orbit-spin 18s linear infinite;
+}
+
+.orbit-medallion__satellite--1 { animation-duration: 16s; }
+.orbit-medallion__satellite--2 { animation-duration: 24s; animation-direction: reverse; }
+.orbit-medallion__satellite--3 { animation-duration: 32s; }
+
+.orbit-medallion__dot {
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  margin-left: -3.5px;
+  border-radius: 50%;
+  background: var(--c-gold-soft);
+  box-shadow: 0 0 10px 2px rgba(255, 211, 122, 0.75);
+}
+
+.orbit-medallion__core {
+  position: absolute;
+  inset: 32%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgba(255, 211, 122, 0.2), rgba(255, 182, 72, 0.05) 70%);
+  border: 1px solid rgba(255, 182, 72, 0.45);
+  color: var(--c-gold);
+  /* Static fallback (also the reduced-motion resting state) — the
+     animation below takes over box-shadow once motion is allowed. */
+  box-shadow: 0 0 30px -6px rgba(255, 182, 72, 0.5);
+  animation: orbit-core-pulse 3s ease-in-out infinite;
+}
+
+/* Continuous breathing glow on the center icon container — independent of
+   (and layered underneath) the one-shot .orbit-medallion__flash that
+   fires on an icon swap. */
+@keyframes orbit-core-pulse {
+  0%, 100% { box-shadow: 0 0 20px 6px rgba(255, 182, 72, 0.3); }
+  50% { box-shadow: 0 0 36px 12px rgba(255, 182, 72, 0.55); }
+}
+
+.orbit-medallion__icon {
+  position: relative;
+  z-index: 1;
+  width: 46%;
+  height: 46%;
+  opacity: 0;
+  transform: scale(0.5) rotate(-90deg);
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+
+.orbit-medallion__icon.is-visible {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+
+/* One-shot glow flash, timed to the exact moment the icon swaps (see
+   OrbitMedallion.jsx) — remounted via `key` each time so it always plays
+   fresh instead of relying on a class re-toggle no-op. */
+.orbit-medallion__flash {
+  position: absolute;
+  inset: -25%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 211, 122, 0.9), transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+  animation: orbit-flash 400ms ease-out;
+}
+
+@keyframes orbit-flash {
+  0%   { opacity: 0; }
+  35%  { opacity: 0.8; }
+  100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbit-medallion,
+  .orbit-medallion__glow,
+  .orbit-medallion__ring,
+  .orbit-medallion__satellite,
+  .orbit-medallion__core,
+  .orbit-medallion__flash { animation: none; }
+
+  .orbit-medallion__icon { transition: none; }
+}

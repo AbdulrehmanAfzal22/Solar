@@ -1,0 +1,157 @@
+.interactive-system__layout {
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 32px;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity var(--dur-reveal) var(--ease-out), transform var(--dur-reveal) var(--ease-out);
+}
+
+.interactive-system__layout.is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.interactive-system__scene {
+  position: relative;
+  overflow: hidden;
+  /* Soft navy-to-gold sky instead of a flat dark box — a horizon glow
+     rising behind the house, so the illustration reads as sitting in an
+     environment rather than floating in empty space. */
+  background:
+    radial-gradient(120% 65% at 50% 100%, rgba(255, 182, 72, 0.16), transparent 65%),
+    linear-gradient(180deg, #1B2A4A 0%, #101826 55%, #0B1220 100%);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-card);
+  padding: 12px;
+}
+
+.interactive-system__ambient {
+  /* Biased to the upper portion of the scene, roughly the roofline/panel
+     area, instead of the full box. */
+  inset: 0 8% 42% 8%;
+  opacity: 0.45;
+}
+
+.interactive-system__svg {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.interactive-system__panel-glow {
+  animation: panel-glow-pulse 3.5s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes panel-glow-pulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.85; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .interactive-system__panel-glow { animation: none; opacity: 0.5; }
+}
+
+.interactive-system__hotspot {
+  position: absolute;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.interactive-system__hotspot-dot {
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--c-gold);
+  box-shadow: 0 0 0 0 rgba(255, 182, 72, 0.5);
+  animation: hotspot-pulse 2.2s ease-out infinite;
+}
+
+@keyframes hotspot-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(255, 182, 72, 0.5); }
+  70%  { box-shadow: 0 0 0 10px rgba(255, 182, 72, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 182, 72, 0); }
+}
+
+.interactive-system__tooltip {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 190px;
+  padding: 12px 14px;
+  text-align: left;
+  z-index: 5;
+}
+
+.interactive-system__tooltip strong {
+  display: block;
+  font-family: var(--f-display);
+  font-size: 0.9rem;
+  color: var(--c-paper);
+  margin-bottom: 4px;
+}
+
+.interactive-system__tooltip p {
+  font-family: var(--f-body);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--c-paper-dim);
+}
+
+.interactive-system__readout {
+  padding: 24px;
+}
+
+.interactive-system__readout-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--f-body);
+  font-size: 0.85rem;
+  color: var(--c-paper-dim);
+  margin-bottom: 10px;
+}
+
+.interactive-system__readout-row strong {
+  font-family: var(--f-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 1.1rem;
+  color: var(--c-paper);
+}
+
+.interactive-system__readout-bar {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(247, 245, 240, 0.14);
+  overflow: hidden;
+  margin: 12px 0;
+}
+
+.interactive-system__readout-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--c-gold), var(--c-gold-soft));
+  border-radius: 999px;
+  transition: width 1s ease;
+}
+
+.interactive-system__readout-footnote {
+  font-family: var(--f-body);
+  font-size: 0.75rem;
+  color: var(--c-paper-faint);
+}
+
+@media (max-width: 860px) {
+  .interactive-system__layout { grid-template-columns: 1fr; }
+}

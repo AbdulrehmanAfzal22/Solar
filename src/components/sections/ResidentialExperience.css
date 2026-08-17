@@ -1,0 +1,121 @@
+/* The reveal-wrap is what useReveal's IntersectionObserver watches — it
+   must stay unclipped, or the ratio it reports is permanently 0 (a
+   clip-path'd box renders with ~zero area, so it can never cross the
+   0.2 threshold and the reveal never fires). The clip-path "wipe" effect
+   itself lives one level down, on .residential__frame, driven by the
+   is-in class the observer's result adds to it. */
+.residential__reveal-wrap {
+  margin-top: 56px;
+}
+
+.residential__frame {
+  position: relative;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 1000ms var(--ease-out);
+}
+
+.residential__frame.is-in {
+  clip-path: inset(0 0 0 0);
+}
+
+.residential__image {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-card);
+  background-color: #16202E;
+  background-size: cover;
+  background-position: center 78%;
+  overflow: hidden;
+}
+
+.residential__hotspot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.residential__hotspot-dot {
+  display: block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--c-gold);
+  box-shadow: 0 0 0 0 rgba(255, 182, 72, 0.5);
+  animation: residential-pulse 2s ease-out infinite;
+}
+
+@keyframes residential-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(255, 182, 72, 0.5); transform: scale(1); }
+  70%  { box-shadow: 0 0 0 12px rgba(255, 182, 72, 0); transform: scale(1.08); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 182, 72, 0); transform: scale(1); }
+}
+
+.residential__hotspot-card {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 190px;
+  padding: 12px 14px;
+  text-align: left;
+  z-index: 5;
+}
+
+.residential__hotspot-card strong {
+  display: block;
+  font-family: var(--f-display);
+  font-size: 0.9rem;
+  color: var(--c-paper);
+  margin-bottom: 4px;
+}
+
+.residential__hotspot-card p {
+  font-family: var(--f-body);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--c-paper-dim);
+}
+
+.residential__stat-card {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  padding: 18px 22px;
+  max-width: 220px;
+}
+
+.residential__stat-label {
+  font-family: var(--f-body);
+  font-size: 0.72rem;
+  color: var(--c-paper-faint);
+  margin-bottom: 6px;
+}
+
+.residential__stat-value {
+  font-family: var(--f-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--c-paper);
+  margin-bottom: 4px;
+}
+
+.residential__stat-value span {
+  font-family: var(--f-body);
+  font-size: 0.8rem;
+  color: var(--c-paper-dim);
+  margin-left: 4px;
+}
+
+.residential__stat-sub {
+  font-family: var(--f-body);
+  font-size: 0.72rem;
+  color: var(--c-paper-faint);
+}
+
+@media (max-width: 600px) {
+  .residential__stat-card { position: static; margin-top: 16px; }
+}

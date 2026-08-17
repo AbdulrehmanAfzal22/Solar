@@ -1,0 +1,29 @@
+.ambient-glow {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ambient-glow__dot {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--glow-color, var(--c-gold));
+  box-shadow: 0 0 8px 2px var(--glow-color, var(--c-gold));
+  opacity: 0.35;
+  animation: ambient-glow-drift var(--dur, 14s) ease-in-out var(--delay, 0s) infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes ambient-glow-drift {
+  0%, 100% { transform: translate(0, 0); opacity: 0.3; }
+  50% { transform: translate(var(--dx, 20px), var(--dy, -20px)); opacity: 0.85; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-glow__dot {
+    animation: none;
+    opacity: 0.5;
+  }
+}

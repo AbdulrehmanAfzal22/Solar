@@ -1,0 +1,271 @@
+.final-cta {
+  position: relative;
+  overflow: hidden;
+  min-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 80px;
+  background: radial-gradient(ellipse at 50% 100%, #101826 0%, #06090F 70%);
+}
+
+/* Slow-drifting color wash behind everything — the thing that makes the
+   section feel alive even before you scroll or move the mouse. */
+.final-cta__aurora {
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255, 182, 72, 0.16), transparent 45%),
+    radial-gradient(circle at 72% 75%, rgba(124, 107, 196, 0.16), transparent 45%);
+  filter: blur(50px);
+  animation: aurora-drift 18s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes aurora-drift {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(4%, -5%) scale(1.1); }
+}
+
+.final-cta__sparkles { z-index: 1; }
+
+.final-cta__scene {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 56px;
+  pointer-events: none;
+}
+
+.final-cta__sun-wrap {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  width: 64px;
+  height: 64px;
+  transform: translate(-50%, -30px) translate(var(--parallax-x, 0px), var(--parallax-y, 0px));
+  transition: transform 400ms ease-out;
+}
+
+.final-cta__sun-halo {
+  position: absolute;
+  inset: -44px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 211, 122, 0.4), transparent 70%);
+  filter: blur(4px);
+  opacity: 0;
+  transition: opacity 1.4s var(--ease-out);
+}
+
+.final-cta__scene.is-in .final-cta__sun-halo {
+  opacity: 0.85;
+  animation: sun-breathe 4.5s ease-in-out 1.4s infinite;
+}
+
+@keyframes sun-breathe {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.3); opacity: 1; }
+}
+
+.final-cta__sun {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--c-gold-soft), var(--c-gold) 70%);
+  opacity: 0;
+  transition: opacity 1.2s var(--ease-out);
+  filter: blur(0.5px);
+}
+
+.final-cta__scene.is-in .final-cta__sun {
+  opacity: 0.95;
+  animation: sun-pulse 4.5s ease-in-out 1.4s infinite;
+}
+
+@keyframes sun-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+.final-cta__ray-group {
+  position: absolute;
+  inset: 0;
+}
+
+.final-cta__scene.is-in .final-cta__ray-group {
+  animation: ray-spin 60s linear infinite;
+}
+
+@keyframes ray-spin {
+  to { transform: rotate(360deg); }
+}
+
+.final-cta__ray {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 78px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 211, 122, 0.55), transparent);
+  transform-origin: 0 50%;
+  transform: rotate(var(--deg)) scaleX(0);
+  opacity: 0;
+  transition: transform 900ms var(--ease-out) 300ms, opacity 900ms var(--ease-out) 300ms;
+}
+
+.final-cta__scene.is-in .final-cta__ray {
+  transform: rotate(var(--deg)) scaleX(1);
+  opacity: 0.7;
+}
+
+.final-cta__structure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.final-cta__roof {
+  position: relative;
+  display: flex;
+  gap: 5px;
+  width: min(240px, 42vw);
+  padding: 6px;
+  background: #0E1622;
+  border-radius: 5px 5px 0 0;
+  overflow: hidden;
+}
+
+.final-cta__roof::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 30%;
+  height: 100%;
+  background: linear-gradient(75deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  opacity: 0;
+}
+
+.final-cta__scene.is-in .final-cta__roof::after {
+  opacity: 1;
+  animation: roof-shimmer 4.5s linear 2s infinite;
+}
+
+@keyframes roof-shimmer {
+  from { transform: translateX(0); }
+  to { transform: translateX(340%); }
+}
+
+.final-cta__roof-panel {
+  flex: 1;
+  height: 16px;
+  border-radius: 2px;
+  background: rgba(255, 182, 72, 0.1);
+  border: 1px solid rgba(255, 182, 72, 0.35);
+  opacity: 0;
+  transform: scaleY(0.4);
+  transform-origin: 50% 100%;
+  transition: opacity 400ms ease var(--panel-delay, 0ms), transform 400ms ease var(--panel-delay, 0ms), background-color 400ms ease var(--panel-delay, 0ms), box-shadow 400ms ease var(--panel-delay, 0ms);
+}
+
+.final-cta__scene.is-in .final-cta__roof-panel {
+  opacity: 1;
+  transform: scaleY(1);
+  background: rgba(255, 211, 122, 0.4);
+  box-shadow: 0 0 10px rgba(255, 211, 122, 0.45);
+}
+
+.final-cta__building {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: min(220px, 40vw);
+  height: 160px;
+  background: #131C2B;
+  padding: 16px;
+}
+
+.final-cta__window {
+  border-radius: 2px;
+  background: #1D2A3C;
+  transition: background-color 500ms ease var(--win-delay, 0ms), box-shadow 500ms ease var(--win-delay, 0ms);
+}
+
+.final-cta__scene.is-in .final-cta__window {
+  background: var(--c-gold-soft);
+  box-shadow: 0 0 12px 2px rgba(255, 211, 122, 0.5);
+}
+
+.final-cta__ground {
+  width: min(300px, 48vw);
+  height: 28px;
+  margin-top: -2px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(255, 182, 72, 0.2), transparent 72%);
+  opacity: 0;
+  transition: opacity 1.6s var(--ease-out) 400ms;
+}
+
+.final-cta__scene.is-in .final-cta__ground {
+  opacity: 1;
+}
+
+.final-cta__content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.final-cta__headline {
+  font-family: var(--f-display);
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  font-weight: 600;
+  color: var(--c-paper);
+  margin-bottom: 16px;
+}
+
+.final-cta__headline.is-in {
+  background: linear-gradient(100deg, var(--c-paper) 35%, #FFE3A8 50%, var(--c-paper) 65%);
+  background-size: 240% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: headline-shine 7s linear 1.6s infinite;
+}
+
+@keyframes headline-shine {
+  0% { background-position: 220% 0; }
+  100% { background-position: -220% 0; }
+}
+
+.final-cta__body {
+  font-family: var(--f-body);
+  font-size: 1.05rem;
+  color: var(--c-paper-dim);
+  max-width: 44ch;
+  margin: 0 auto 32px;
+}
+
+.final-cta__buttons {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .final-cta__aurora,
+  .final-cta__sun,
+  .final-cta__sun-halo,
+  .final-cta__ray-group,
+  .final-cta__ray,
+  .final-cta__roof::after,
+  .final-cta__roof-panel,
+  .final-cta__ground,
+  .final-cta__window,
+  .final-cta__headline.is-in { animation: none; transition: none; }
+}

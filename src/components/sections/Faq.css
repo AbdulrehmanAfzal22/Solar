@@ -1,0 +1,173 @@
+.faq {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Fills the empty space beside the (intentionally narrower) answer
+   column on wide viewports: the medallion tracks whichever question is
+   open (see Faq.jsx), a label ties it back to that question, and a
+   glass-card CTA below gives the rest of the column an actual job
+   instead of sitting empty. The cluster is centered as one block, same
+   trick the old circle-only version used (top: 50% + translateY). */
+.faq__decor {
+  position: absolute;
+  top: 50%;
+  right: 3%;
+  width: 300px;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  pointer-events: none;
+}
+
+.faq__decor-medallion {
+  width: 220px;
+  height: 220px;
+}
+
+.faq__decor-label {
+  font-family: var(--f-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--c-paper-dim);
+  text-align: center;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.faq__decor-card {
+  width: 100%;
+  padding: 22px;
+  text-align: center;
+  pointer-events: auto;
+}
+
+.faq__decor-card-title {
+  font-family: var(--f-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--c-paper);
+  margin-bottom: 8px;
+}
+
+.faq__decor-card-text {
+  font-family: var(--f-body);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--c-paper-dim);
+  margin-bottom: 18px;
+}
+
+.faq__decor-card .btn {
+  width: 100%;
+}
+
+.faq .sparkle-field.faq__sparkles {
+  left: 45%;
+  right: 0;
+}
+
+@media (max-width: 1100px) {
+  .faq__decor,
+  .faq__sparkles { display: none; }
+}
+
+.faq__list {
+  position: relative;
+  margin-top: 48px;
+  max-width: 760px;
+}
+
+.faq-row {
+  border-bottom: 1px solid var(--c-border);
+}
+
+.faq-row__question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 8px;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--f-display);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--c-paper);
+  transition: background-color .2s ease;
+}
+
+.faq-row__question:hover {
+  background: rgba(247, 245, 240, 0.04);
+}
+
+.faq-row__icon-badge {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 182, 72, 0.08);
+  color: var(--c-gold);
+}
+
+.faq-row__icon {
+  width: 20px;
+  height: 20px;
+}
+
+.faq-row__question-text {
+  flex: 1;
+}
+
+.faq-row__chevron {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  position: relative;
+  transition: transform .3s var(--ease-out);
+}
+
+.faq-row__chevron::before,
+.faq-row__chevron::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 2px;
+  background: var(--c-gold);
+  transform: translate(-50%, -50%);
+}
+
+.faq-row__chevron::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+  transition: transform .3s var(--ease-out);
+}
+
+.faq-row__chevron.is-open::after {
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+.faq-row__answer {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 350ms var(--ease-out);
+}
+
+.faq-row__answer p {
+  padding: 0 8px 22px;
+  font-family: var(--f-body);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--c-paper-dim);
+  max-width: 60ch;
+}

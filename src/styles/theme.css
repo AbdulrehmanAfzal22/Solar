@@ -1,0 +1,42 @@
+/* ============================================
+   Design tokens — the single source of truth for
+   color, type, and spacing across every section.
+   Hero.css / Navbar.css define their own copies of a
+   few of these (kept untouched, per "leave the hero
+   section" — see /components/sections/Hero.jsx in
+   the parent App.jsx). Every NEW section below reads
+   from these variables instead of hardcoding values,
+   so a re-theme (client re-skin) means editing this
+   file only.
+   ============================================ */
+
+:root {
+  /* Color */
+  --c-bg: #0B1220;           /* near-black base */
+  --c-bg-raised: #101826;    /* glass panel base, before alpha */
+  --c-bg-raised-2: #151E30;  /* slightly lighter panel, for contrast within a section */
+  --c-ink: #0B1220;          /* text on light/gold surfaces */
+  --c-paper: #F7F5F0;        /* primary text on dark */
+  --c-paper-dim: rgba(247, 245, 240, 0.65);
+  --c-paper-faint: rgba(247, 245, 240, 0.4);
+  --c-gold: #FFB648;         /* primary accent */
+  --c-gold-soft: #FFD37A;    /* warm glow / secondary accent */
+  --c-border: rgba(247, 245, 240, 0.12);
+  --c-border-strong: rgba(247, 245, 240, 0.22);
+
+  /* Type */
+  --f-display: 'Space Grotesk', sans-serif;
+  --f-body: 'Inter', sans-serif;
+  --f-mono: 'IBM Plex Mono', monospace;
+
+  /* Layout */
+  --content-width: 1240px;
+  --section-pad-y: clamp(64px, 10vw, 120px);
+  --section-pad-x: clamp(24px, 6vw, 64px);
+  --radius-card: 20px;
+  --radius-pill: 999px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-reveal: 700ms;
+}

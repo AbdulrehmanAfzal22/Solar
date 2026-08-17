@@ -1,0 +1,182 @@
+/* The shared .section primitive sets overflow:hidden, which constrains a
+   position:sticky descendant to that ancestor's own clipping box instead
+   of the viewport — breaking the pin partway through the scroll range.
+   This section doesn't need the clipping (nothing here bleeds past its
+   edges), so it opts back out. */
+.projects {
+  overflow: visible;
+}
+
+/* Pin mechanic — identical technique to .hero/.hero__stage in App.jsx: a
+   tall wrapper (height set inline, ~100vh per card) holding a
+   `position: sticky; top: 0; height: 100vh` stage. Scroll progress through
+   the wrapper's extra height maps to the active card index in JS. */
+.projects__pin {
+  position: relative;
+}
+
+.projects__stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.projects__layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(32px, 6vw, 80px);
+  align-items: center;
+}
+
+.projects__info .eyebrow,
+.projects__info .section-heading {
+  margin-bottom: 0;
+}
+
+.projects__info .section-heading {
+  margin-bottom: 28px;
+}
+
+/* Crossfading title/description — both layers can be present at once
+   during a transition; a fixed min-height keeps the swap from jostling
+   the layout as description lengths vary between projects. */
+.projects__info-text {
+  position: relative;
+  min-height: 84px;
+}
+
+.projects__info-layer {
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+.projects__info-layer.is-visible {
+  opacity: 1;
+}
+
+.projects__info-layer--out {
+  position: absolute;
+  inset: 0;
+  opacity: 1;
+}
+
+.projects__info-layer--out.is-out {
+  opacity: 0;
+}
+
+.projects__info-title {
+  font-family: var(--f-display);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--c-paper);
+  margin-bottom: 10px;
+}
+
+.projects__info-desc {
+  font-family: var(--f-body);
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: var(--c-paper-dim);
+  max-width: 42ch;
+}
+
+/* Card stack — exactly one active + one peeking card visible at a time;
+   every card is always mounted and positioned via transform/opacity keyed
+   off its offset from the active index (see Projects.jsx), so the swap is
+   a plain CSS transition, not a hand-rolled animation loop. */
+.projects__stack {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 4 / 3;
+  margin: 0 auto;
+}
+
+.projects__stack-card {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-card);
+  background-color: #101826;
+  background-size: cover;
+  background-position: center;
+  border: 1px solid var(--c-border);
+  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.55);
+  transition: transform 550ms var(--ease-out), opacity 450ms ease;
+  will-change: transform, opacity;
+}
+
+@media (max-width: 900px) {
+  .projects__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .projects__stack {
+    order: -1;
+    max-width: 340px;
+  }
+}
+
+/* Reduced motion / narrow viewports (see NARROW_BREAKPOINT in
+   Projects.jsx) — no pin, no stack, just every project as a plain
+   stacked list in normal document flow. */
+.projects__static-list {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.projects__static-item {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 24px;
+  align-items: center;
+  padding: 20px;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--c-border);
+}
+
+.projects__static-media {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: calc(var(--radius-card) - 8px);
+  background-color: #101826;
+  background-size: cover;
+  background-position: center;
+}
+
+.projects__static-body .projects__info-title,
+.projects__static-body .projects__info-desc {
+  margin-bottom: 10px;
+}
+
+.projects__card-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.projects__card-stats span {
+  display: block;
+  font-family: var(--f-mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--c-paper);
+  margin-bottom: 2px;
+}
+
+.projects__card-stats label {
+  font-family: var(--f-body);
+  font-size: 0.64rem;
+  color: var(--c-paper-faint);
+}
+
+@media (max-width: 640px) {
+  .projects__static-item {
+    grid-template-columns: 1fr;
+  }
+}

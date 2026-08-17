@@ -1,0 +1,92 @@
+.testimonials__track {
+  display: flex;
+  gap: 24px;
+  padding: 48px var(--section-pad-x) 8px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.testimonials__track::-webkit-scrollbar { display: none; }
+
+.testimonials__card {
+  flex-shrink: 0;
+  width: min(720px, 86vw);
+  scroll-snap-align: center;
+  padding: 8px;
+}
+
+.testimonials__quote {
+  position: relative;
+  font-family: var(--f-display);
+  font-size: clamp(1.4rem, 2.8vw, 2rem);
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--c-paper-faint);
+  margin-bottom: 32px;
+}
+
+/* Highlighter-style reveal: a bright duplicate of the same text, clipped
+   from the left, wipes in over the always-visible dim base text. */
+.testimonials__quote::before {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  color: var(--c-paper);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 700ms var(--ease-out);
+}
+
+.testimonials__quote.is-active::before {
+  clip-path: inset(0 0 0 0);
+}
+
+.testimonials__meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.testimonials__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--c-gold), var(--c-gold-soft));
+  flex-shrink: 0;
+}
+
+.testimonials__name {
+  font-family: var(--f-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--c-paper);
+}
+
+.testimonials__location {
+  font-family: var(--f-body);
+  font-size: 0.78rem;
+  color: var(--c-paper-faint);
+}
+
+.testimonials__dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.testimonials__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--c-border-strong);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: background-color .25s ease, transform .25s ease;
+}
+
+.testimonials__dot.is-active {
+  background: var(--c-gold);
+  transform: scale(1.3);
+}

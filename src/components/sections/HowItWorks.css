@@ -1,0 +1,147 @@
+.how-it-works {
+  position: relative;
+}
+
+.how-it-works__ambient {
+  opacity: 0.22;
+}
+
+.how-it-works__diagram {
+  position: relative;
+  z-index: 1;
+  margin-top: 72px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.how-it-works__line {
+  position: absolute;
+  top: 17px;
+  left: 5%;
+  right: 5%;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--c-gold), rgba(255, 182, 72, 0.12));
+  box-shadow: 0 0 10px 1px rgba(255, 182, 72, 0.3);
+}
+
+.how-it-works__travel-dot,
+.how-it-works__travel-dot-trail {
+  position: absolute;
+  left: 0;
+  border-radius: 50%;
+  background: var(--c-gold-soft);
+  opacity: 0;
+  animation: how-it-works-travel 5s ease-in-out infinite;
+}
+
+.how-it-works__travel-dot {
+  top: -4px;
+  width: 10px;
+  height: 10px;
+  box-shadow: 0 0 14px 4px rgba(255, 211, 122, 0.85);
+  z-index: 2;
+}
+
+/* Same motion path as the lead dot, offset ~150ms behind and dimmed —
+   reads as a short fading trail rather than a second, separate dot. */
+.how-it-works__travel-dot-trail {
+  top: -3px;
+  width: 7px;
+  height: 7px;
+  box-shadow: 0 0 9px 3px rgba(255, 211, 122, 0.45);
+  animation-delay: .15s;
+  filter: opacity(0.5);
+  z-index: 1;
+}
+
+.how-it-works__diagram.is-in .how-it-works__travel-dot,
+.how-it-works__diagram.is-in .how-it-works__travel-dot-trail {
+  opacity: 1;
+}
+
+@keyframes how-it-works-travel {
+  0%   { left: 0%; opacity: 0; }
+  8%   { opacity: 1; }
+  92%  { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+
+.how-it-works__node {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 20%;
+  opacity: 0;
+  transform: translateY(16px) scale(0.9);
+  transition: opacity 500ms var(--ease-out) var(--node-delay, 0ms),
+              transform 500ms var(--ease-out) var(--node-delay, 0ms),
+              filter .25s ease;
+  cursor: pointer;
+}
+
+.how-it-works__diagram.is-in .how-it-works__node {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.how-it-works__node.is-dimmed {
+  filter: opacity(0.45);
+}
+
+.how-it-works__node-dot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--c-gold-soft), var(--c-gold) 70%);
+  box-shadow: 0 0 0 6px rgba(255, 182, 72, 0.12);
+  color: #1A1204;
+  transition: box-shadow .25s ease, transform .25s ease;
+}
+
+.how-it-works__node-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.how-it-works__node:hover .how-it-works__node-dot,
+.how-it-works__node:focus-visible .how-it-works__node-dot {
+  transform: scale(1.15);
+  box-shadow: 0 0 0 10px rgba(255, 182, 72, 0.2);
+}
+
+.how-it-works__node-label {
+  font-family: var(--f-body);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--c-paper-dim);
+  text-align: center;
+}
+
+.how-it-works__tooltip {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  padding: 12px 14px;
+  font-family: var(--f-body);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--c-paper-dim);
+  text-align: left;
+  z-index: 5;
+}
+
+@media (max-width: 760px) {
+  .how-it-works__diagram { flex-wrap: wrap; gap: 32px 0; }
+  .how-it-works__node { width: 33%; }
+  .how-it-works__line { display: none; }
+  .how-it-works__tooltip { width: 160px; }
+}

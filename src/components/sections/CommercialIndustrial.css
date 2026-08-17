@@ -1,0 +1,210 @@
+.commercial__ambient {
+  opacity: 0.2;
+}
+
+.commercial__frame {
+  position: relative;
+  z-index: 1;
+  margin-top: 56px;
+  aspect-ratio: 21 / 9;
+  border-radius: var(--radius-card);
+  background-color: #14202C;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+  padding: 40px;
+}
+
+.commercial__roof {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 6px;
+  height: 100%;
+}
+
+.commercial__panel {
+  border-radius: 3px;
+  background: rgba(255, 182, 72, 0.12);
+  border: 1px solid rgba(255, 182, 72, 0.55);
+  box-shadow: 0 0 10px rgba(255, 182, 72, 0.25), inset 0 0 6px rgba(255, 182, 72, 0.15);
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 300ms ease var(--panel-delay, 0ms), transform 300ms ease var(--panel-delay, 0ms);
+}
+
+.commercial__frame.is-in .commercial__panel {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* One-shot diagonal light-sweep, corner to corner, once the panel grid
+   has revealed — same "gradient band translated across" technique as
+   .final-cta__roof::after's shimmer, just wider, gold, and non-looping. */
+.commercial__frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 42%, rgba(255, 211, 122, 0.4) 50%, transparent 58%);
+  transform: translateX(-130%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.commercial__frame.is-in::after {
+  animation: commercial-sweep 1.2s ease-out 200ms forwards;
+}
+
+@keyframes commercial-sweep {
+  0%   { transform: translateX(-130%); opacity: 0; }
+  12%  { opacity: 1; }
+  85%  { opacity: 1; }
+  100% { transform: translateX(130%); opacity: 0; }
+}
+
+/* Corner-bracket reticle — snaps in a beat after the panel grid finishes
+   filling, reading as "scan complete." */
+.commercial__corner {
+  position: absolute;
+  z-index: 2;
+  width: 22px;
+  height: 22px;
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity 400ms var(--ease-out), transform 400ms var(--ease-out);
+  transition-delay: 1.3s;
+  pointer-events: none;
+}
+
+.commercial__frame.is-in .commercial__corner {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.commercial__corner--tl { top: 14px; left: 14px; border-top: 2px solid var(--c-gold); border-left: 2px solid var(--c-gold); }
+.commercial__corner--tr { top: 14px; right: 14px; border-top: 2px solid var(--c-gold); border-right: 2px solid var(--c-gold); }
+.commercial__corner--bl { bottom: 14px; left: 14px; border-bottom: 2px solid var(--c-gold); border-left: 2px solid var(--c-gold); }
+.commercial__corner--br { bottom: 14px; right: 14px; border-bottom: 2px solid var(--c-gold); border-right: 2px solid var(--c-gold); }
+
+/* HUD readout — hidden until the frame is hovered, surfaces the same
+   numbers as the stat row below directly on the photo. */
+.commercial__hud {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  right: 22px;
+  transform: translateY(-50%) translateX(6px);
+  width: 168px;
+  padding: 14px 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 250ms ease, transform 250ms ease;
+}
+
+.commercial__frame:hover .commercial__hud {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+.commercial__hud-title {
+  font-family: var(--f-body);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--c-gold);
+  margin-bottom: 8px;
+}
+
+.commercial__hud-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-family: var(--f-mono);
+  font-size: 0.76rem;
+  color: var(--c-paper);
+  padding: 3px 0;
+}
+
+.commercial__hud-row span:first-child {
+  font-family: var(--f-body);
+  font-size: 0.68rem;
+  color: var(--c-paper-faint);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .commercial__frame::after { animation: none; }
+  .commercial__corner { transition: none; }
+}
+
+.commercial__stats {
+  margin-top: 28px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.commercial__stat {
+  position: relative;
+  padding: 20px 22px;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--c-border);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+
+.commercial__stat:hover {
+  transform: translateY(-4px);
+  border-color: var(--c-border-strong);
+  box-shadow: 0 20px 50px -24px rgba(255, 182, 72, 0.25);
+}
+
+.commercial__stat-icon-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--c-gold), var(--c-gold-soft));
+  color: #1A1204;
+  margin-bottom: 14px;
+}
+
+.commercial__stat-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.commercial__stat-value {
+  font-family: var(--f-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--c-paper);
+  margin-bottom: 6px;
+}
+
+.commercial__stat-underline {
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--c-gold), var(--c-gold-soft));
+  border-radius: 2px;
+  transition: width 1.5s var(--ease-out);
+  margin-bottom: 10px;
+}
+
+.commercial__stat-underline.is-in {
+  width: 100%;
+}
+
+.commercial__stat-label {
+  font-family: var(--f-body);
+  font-size: 0.82rem;
+  color: var(--c-paper-dim);
+}
+
+@media (max-width: 760px) {
+  .commercial__roof { grid-template-columns: repeat(6, 1fr); grid-template-rows: repeat(4, 1fr); }
+  .commercial__stats { grid-template-columns: 1fr; }
+  .commercial__hud { display: none; }
+}

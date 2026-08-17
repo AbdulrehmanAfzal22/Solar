@@ -1,0 +1,27 @@
+.sparkle-field {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.sparkle-field__particle {
+  position: absolute;
+  bottom: -10px;
+  border-radius: 50%;
+  background: var(--c-gold-soft, #ffd37a);
+  opacity: 0;
+  box-shadow: 0 0 6px 1px rgba(255, 211, 122, 0.7);
+  animation: sparkle-rise var(--dur, 10s) ease-in var(--delay, 0s) infinite;
+}
+
+@keyframes sparkle-rise {
+  0% { transform: translate(0, 0); opacity: 0; }
+  8% { opacity: 0.9; }
+  90% { opacity: 0.4; }
+  100% { transform: translate(var(--drift, 0), -260px); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sparkle-field__particle { animation: none; opacity: 0; }
+}
